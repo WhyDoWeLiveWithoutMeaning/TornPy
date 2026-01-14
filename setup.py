@@ -13,8 +13,8 @@ setup(
   license="MIT",
   packages=['torn'],
   install_requires=[
-    "pydantic=<2.12.5",
-    "httpx=<0.28.1",
+    "pydantic>=2.12.5",
+    "httpx>=0.28.1",
   ],
   classifiers=[
     'Development Status :: 1 - Planning',
