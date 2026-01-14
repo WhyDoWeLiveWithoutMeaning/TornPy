@@ -387,6 +387,20 @@ class UserClothing(BaseModel):
     uid: int
     type: TornItemTypeEnum
 
+class UserEvent(BaseModel):
+    id: str
+    timestamp: int
+    event: str
+
+class UserFaction(BaseModel):
+    id: int
+    name: str
+    tag: str
+    tag_image: str
+    position: str
+    days_in_faction: int
+
+
 # Models
 
 class UserBasicResponse(BaseModel):
@@ -442,3 +456,9 @@ class UserEnlistedCarsResponse(BaseModel):
 class UserEquipmentResponse(BaseModel):
     equipment: List[UserEquipment]
     clothing: List[UserClothing]
+
+class UserEventsResponse(BaseModel):
+    events: List[UserEvent]
+
+class UserFactionResponse(BaseModel):
+    faction: Optional[UserFaction]

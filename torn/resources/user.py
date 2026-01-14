@@ -16,7 +16,9 @@ from ..models import (
     UserDiscordResponse,
     UserEducationResponse,
     UserEnlistedCarsResponse,
-    UserEquipmentResponse
+    UserEquipmentResponse,
+    UserEventsResponse,
+    UserFactionResponse
 )
 
 class UserResource(BaseResource):
@@ -261,7 +263,7 @@ class UserResource(BaseResource):
         
         return UserCrimesResponse(**data)
 
-    def get_discord(self: "SyncTorn", user_id: int | None = None, **kwargs):
+    def get_discord(self: "SyncTorn", user_id: int | None = None, **kwargs) -> UserDiscordResponse:
         """
         Get your discord or for a specific user.
 
@@ -285,7 +287,7 @@ class UserResource(BaseResource):
 
         return UserDiscordResponse(**data)
 
-    def get_education(self: "SyncTorn", **kwargs) -> UserCooldownsResponse:
+    def get_education(self: "SyncTorn", **kwargs) -> UserEducationResponse:
         """
         Get your education information.
 
@@ -303,7 +305,7 @@ class UserResource(BaseResource):
         
         return UserEducationResponse(**data)
 
-    def get_enlisted_cars(self: "SyncTorn", **kwargs) -> UserCooldownsResponse:
+    def get_enlisted_cars(self: "SyncTorn", **kwargs) -> UserEnlistedCarsResponse:
         """
         Get your enlisted cars.
 
@@ -321,7 +323,7 @@ class UserResource(BaseResource):
         
         return UserEnlistedCarsResponse(**data)
 
-    def get_equipment(self: "SyncTorn", **kwargs) -> UserCooldownsResponse:
+    def get_equipment(self: "SyncTorn", **kwargs) -> UserEquipmentResponse:
         """
         Get your equipment & clothing.
 
@@ -338,3 +340,43 @@ class UserResource(BaseResource):
         data = self._handle_response(response)
         
         return UserEquipmentResponse(**data)
+
+    def get_events(self: "SyncTorn", **kwargs) -> UserEventsResponse:
+        """
+        Get your events.
+
+        **Access Level:** Limited Access
+
+        :param kwargs: Optional API parameters:
+            * **striptags** (bool): Determines if fields include HTML or not.
+            * **limit** (int): Default Value: 20
+            * **to** (int): Timestamp that sets the upper limit for the data returned. Data returned will be up to and including this time.
+            * **from** (int): Timestamp that sets the lower limit for the data returned. Data returned will be after this time.
+            * **bypass_cache** (bool): If True, adds a timestamp to force fresh data.
+            * **comment** (str): A custom string to show in your API logs.
+            * **key** (str): API key. It's not required to use this parameter when passing the API key via the Authorization header.
+        """
+        url = self._build_url("user", "events")
+        params = self._prepare_params(**kwargs)
+        response = self._request(url, params=params)
+        data = self._handle_response(response)
+        
+        return UserEventsResponse(**data)
+
+    def get_faction(self: "SyncTorn", **kwargs) -> UserFactionResponse:
+        """
+        Get your faction information.
+
+        **Access Level:** Public Access
+
+        :param kwargs: Optional API parameters:
+            * **bypass_cache** (bool): If True, adds a timestamp to force fresh data.
+            * **comment** (str): A custom string to show in your API logs.
+            * **key** (str): API key. It's not required to use this parameter when passing the API key via the Authorization header.
+        """
+        url = self._build_url("user", "faction")
+        params = self._prepare_params(**kwargs)
+        response = self._request(url, params=params)
+        data = self._handle_response(response)
+        
+        return UserFactionResponse(**data)
