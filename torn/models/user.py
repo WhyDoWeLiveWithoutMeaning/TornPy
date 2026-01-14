@@ -1,25 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional, Union, Annotated, Literal
-from .common import (
-    BasicTornModel,
-    BasicUser,
-    ItemRarity,
-    TornItemBaseStats,
-    ItemMarketListingItemBonus,
-    TornItemAmmoTypeEnum,
-    UserStatusStateEnum,
-    UserPlaneImageTypeEnum,
-    UserGenderEnum,
-    ApiFiltersAttacksRevivesEnum,
-    AttackPlayerFaction,
-    FactionAttackResult,
-    FactionOngoingChain,
-    RPSEnum,
-    UserCrimeUniquesRewardAmmoEnum,
-    RaceClassEnum,
-    TornItemTypeEnum,
-    TornItemWeaponTypeEnum
-)
+from .common import *
+from .enums import *
 
 # Sub Sub Sub Models
 
@@ -189,6 +171,10 @@ class UserCrimeUniquesReward(BaseModel):
     money: Optional[UserCrimeUniquesRewardMoney] = None
     ammo: Optional[UserCrimeUniquesRewardAmmo] = None
 
+class ForumPollVote(BaseModel):
+    answer: str
+    votes: int
+
 # Mid Sub Models
 
 class UserBattleStatDetail(BaseModel):
@@ -257,6 +243,20 @@ class UserCurrentEducation(BaseModel):
 
 class TornItemEquipmentStats(TornItemBaseStats):
     quality: float
+
+class ForumThreadAuthor(BaseModel):
+    id: int
+    username: str
+    karma: int
+
+class ForumSubscribedThreadPostsCount(BaseModel):
+    new: int
+    total: int
+
+class ForumPoll(BaseModel):
+    question: str
+    answers_count: int
+    answers: List[ForumPollVote]
 
 # Sub Models
 
@@ -400,6 +400,58 @@ class UserFaction(BaseModel):
     position: str
     days_in_faction: int
 
+class ForumFeed(BaseModel):
+    thread_id: int
+    post_id: int
+    user: ForumThreadAuthor
+    title: str
+    text: str
+    timestamp: int
+    is_seen: bool
+    type: ForumFeedTypeEnum
+
+class ForumPost(BaseModel):
+    id: int
+    thread_id: int
+    author: ForumThreadAuthor
+    is_legacy: bool
+    is_topic: bool
+    is_edited: bool
+    is_pinned: bool
+    created_time: int
+    edited_by: Optional[int] = None
+    has_quote: bool
+    quoted_post_id: Optional[int] = None
+    content: str
+    likes: int
+    dislikes: int
+
+class ForumSubscribedThread(BaseModel):
+    id: int
+    forum_id: int
+    author: ForumThreadAuthor
+    title: str
+    posts: ForumSubscribedThreadPostsCount
+
+class ForumThreadBase(BaseModel):
+    id: int
+    title: str
+    forum_id: int
+    posts: int
+    rating: int
+    views: int
+    author: ForumThreadAuthor
+    last_poster: Optional[ForumThreadAuthor] = None
+    first_post_time: Optional[int] = None
+    last_post_time: Optional[int] = None
+    has_poll: bool
+    is_locked: bool
+    is_sticky: bool
+    
+class ForumThreadExtended(ForumThreadBase):
+    content: str
+    content_raw: str
+    poll: Optional[ForumPoll] = None
 
 # Models
 
@@ -462,3 +514,16 @@ class UserEventsResponse(BaseModel):
 
 class UserFactionResponse(BaseModel):
     faction: Optional[UserFaction]
+
+class UserForumFeedResponse(BaseModel):
+    forumFeed: List[ForumFeed]
+
+class UserForumFriendsResponse(BaseModel):
+    forumFriends: List[ForumFeed]
+
+class UserForumPostsResponse(BaseModel):
+    forumPosts: List[ForumPost]
+
+class UserForumSubscribedThreadsResponse(BaseModel):
+    forumSubscribedThreads: List[ForumSubscribedThread]
+

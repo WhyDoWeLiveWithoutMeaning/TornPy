@@ -2,6 +2,7 @@ import httpx
 import time
 from ._base import BaseClient
 from .resources.user import UserResource
+from .resources.faction import FactionResource
 from .models import UserBasicResponse
 
 class SyncTorn(BaseClient):
@@ -9,6 +10,7 @@ class SyncTorn(BaseClient):
         super().__init__(base_url="https://api.torn.com/v2", api_key=api_key)
         self.client = httpx.Client()
         self.user = UserResource(self)
+        self.faction = FactionResource(self)
 
     def _request(self, url: str, params: dict):
         """

@@ -1,25 +1,5 @@
 from ._base import BaseResource
-from ..models import (
-    UserBasicResponse,
-    UserAmmoResponse,
-    Crimes,
-    ApiFiltersAttacksRevivesEnum,
-    AttacksResponse,
-    AttacksFullResponse,
-    UserBarsResponse,
-    UserBattleStatsResponse,
-    UserBountiesResponse,
-    UserCalendarResponse,
-    UserCompetitionResponse,
-    UserCooldownsResponse,
-    UserCrimesResponse,
-    UserDiscordResponse,
-    UserEducationResponse,
-    UserEnlistedCarsResponse,
-    UserEquipmentResponse,
-    UserEventsResponse,
-    UserFactionResponse
-)
+from ..models import *
 
 class UserResource(BaseResource):
     def get_ammo(self: "SyncTorn", **kwargs) -> UserAmmoResponse:
@@ -363,20 +343,164 @@ class UserResource(BaseResource):
         
         return UserEventsResponse(**data)
 
-    def get_faction(self: "SyncTorn", **kwargs) -> UserFactionResponse:
+    def get_faction(self: "SyncTorn", user_id: int | None = None, **kwargs) -> UserFactionResponse:
         """
         Get your faction information.
 
         **Access Level:** Public Access
+
+        :param user_id: User id or user discord id
+        :param kwargs: Optional API parameters:
+            * **bypass_cache** (bool): If True, adds a timestamp to force fresh data.
+            * **comment** (str): A custom string to show in your API logs.
+            * **key** (str): API key. It's not required to use this parameter when passing the API key via the Authorization header.
+        """
+
+        if user_id:
+            url = self._build_url("user", user_id, "faction")
+        else:
+            url = self._build_url("user", "faction")
+
+        params = self._prepare_params(**kwargs)
+        response = self._request(url, params=params)
+        data = self._handle_response(response)
+        
+        return UserFactionResponse(**data)
+
+    def get_forum_feed(self: "SyncTorn", **kwargs) -> UserForumFeedResponse:
+        """
+        Get updates on your threads and posts.
+
+        **Access Level:** Minimal Access
 
         :param kwargs: Optional API parameters:
             * **bypass_cache** (bool): If True, adds a timestamp to force fresh data.
             * **comment** (str): A custom string to show in your API logs.
             * **key** (str): API key. It's not required to use this parameter when passing the API key via the Authorization header.
         """
-        url = self._build_url("user", "faction")
+
+        url = self._build_url("user", "forumfeed")
         params = self._prepare_params(**kwargs)
         response = self._request(url, params=params)
         data = self._handle_response(response)
         
-        return UserFactionResponse(**data)
+        return UserForumFeedResponse(**data)
+
+    def get_forum_friends(self: "SyncTorn", **kwargs) -> UserForumFriendsResponse:
+        """
+        Get updates on your friends' activity.
+
+        **Access Level:** Minimal Access
+
+        :param kwargs: Optional API parameters:
+            * **bypass_cache** (bool): If True, adds a timestamp to force fresh data.
+            * **comment** (str): A custom string to show in your API logs.
+            * **key** (str): API key. It's not required to use this parameter when passing the API key via the Authorization header.
+        """
+
+        url = self._build_url("user", "forumfriends")
+        params = self._prepare_params(**kwargs)
+        response = self._request(url, params=params)
+        data = self._handle_response(response)
+        
+        return UserForumFriendsResponse(**data)
+
+    def get_forum_posts(self: "SyncTorn", user_id: int | None = None, **kwargs) -> UserForumPostsResponse:
+        """
+        Get your posts.
+
+        **Access Level:** Public Access
+
+        :param user_id: User id or user discord id
+        :param kwargs: Optional API parameters:
+            * **striptags** (bool): Determines if fields include HTML or not.
+            * **limit** (int): Default Value: 20
+            * **sort** (str): Sorted by the greatest timestamps. Available values: DESC, ASC.
+            * **to** (int): Timestamp that sets the upper limit for the data returned. Data returned will be up to and including this time.
+            * **from** (int): Timestamp that sets the lower limit for the data returned. Data returned will be after this time.
+            * **bypass_cache** (bool): If True, adds a timestamp to force fresh data.
+            * **comment** (str): A custom string to show in your API logs.
+            * **key** (str): API key. It's not required to use this parameter when passing the API key via the Authorization header.
+        """
+
+        if user_id:
+            url = self._build_url("user", user_id, "forumposts")
+        else:
+            url = self._build_url("user", "forumposts")
+        
+        params = self._prepare_params(**kwargs)
+        response = self._request(url, params=params)
+        data = self._handle_response(response)
+        
+        return UserForumPostsResponse(**data)
+
+    def get_forum_subscribed_threads(self: "SyncTorn", **kwargs) -> UserForumSubscribedThreadsResponse:
+        """
+        Get updates on threads you subscribed to.
+
+        **Access Level:** Minimal Access
+
+        :param kwargs: Optional API parameters:
+            * **bypass_cache** (bool): If True, adds a timestamp to force fresh data.
+            * **comment** (str): A custom string to show in your API logs.
+            * **key** (str): API key. It's not required to use this parameter when passing the API key via the Authorization header.
+        """
+
+        url = self._build_url("user", "forumsubscribedthreads")
+        params = self._prepare_params(**kwargs)
+        response = self._request(url, params=params)
+        data = self._handle_response(response)
+        
+        return UserForumSubscribedThreadsResponse(**data)
+    
+    def get_forum_threads(self: "SyncTorn", user_id: int | None = None, **kwargs) -> UserForumPostsResponse:
+        """
+        Get your threads.
+
+        **Access Level:** Public Access
+
+        :param user_id: User id or user discord id
+        :param kwargs: Optional API parameters:
+            * **limit** (int): Default Value: 20
+            * **sort** (str): Sorted by the greatest timestamps. Available values: DESC, ASC.
+            * **to** (int): Timestamp that sets the upper limit for the data returned. Data returned will be up to and including this time.
+            * **from** (int): Timestamp that sets the lower limit for the data returned. Data returned will be after this time.
+            * **bypass_cache** (bool): If True, adds a timestamp to force fresh data.
+            * **comment** (str): A custom string to show in your API logs.
+            * **key** (str): API key. It's not required to use this parameter when passing the API key via the Authorization header.
+        """
+
+        if user_id:
+            url = self._build_url("user", user_id, "forumposts")
+        else:
+            url = self._build_url("user", "forumposts")
+        
+        params = self._prepare_params(**kwargs)
+        response = self._request(url, params=params)
+        data = self._handle_response(response)
+        
+        return UserForumPostsResponse(**data)
+
+    def get_hof(self: "SyncTorn", user_id: int | None = None, **kwargs) -> UserForumPostsResponse:
+        """
+        Get your Hall of Fame rankings.
+
+        **Access Level:** Public Access
+
+        :param user_id: User id or user discord id
+        :param kwargs: Optional API parameters:
+            * **bypass_cache** (bool): If True, adds a timestamp to force fresh data.
+            * **comment** (str): A custom string to show in your API logs.
+            * **key** (str): API key. It's not required to use this parameter when passing the API key via the Authorization header.
+        """
+
+        if user_id:
+            url = self._build_url("user", user_id, "forumposts")
+        else:
+            url = self._build_url("user", "forumposts")
+        
+        params = self._prepare_params(**kwargs)
+        response = self._request(url, params=params)
+        data = self._handle_response(response)
+        
+        return UserForumPostsResponse(**data)
