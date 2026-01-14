@@ -4,7 +4,7 @@ from urllib.parse import urlencode
 from enum import Enum
 from typing import Any, Dict
 
-from .exceptions import APIError
+from .exceptions import *
 
 class BaseClient:
     def __init__(
@@ -60,8 +60,6 @@ class BaseClient:
             elif isinstance(v, Enum):
                 extra_params[k] = v.value
             
-        # 2. Merge any endpoint-specific params (like 'from', 'to', 'limit')
-        # This filters out None values so they don't clutter the URL
         params.update({k: v for k, v in extra_params.items() if v is not None})
             
         return params
@@ -70,7 +68,50 @@ class BaseClient:
         try:
             response.raise_for_status()
         except httpx.HTTPStatusError as exc:
-            raise APIError(
+            raise TornAPIError(
                 f"API Request failed: {exc.response.status_code} - {exc.response.text}"
             ) from exc
+        data = response.json()
+
+        if "error" in data:
+            error_info = data["error"]
+            code = error_info.get("code")
+            msg = error_info.get("error", "Unknown Error")
+
+            match code:
+                case 0:
+                    raise UnknownError(code, msg)
+                case 1:
+                    raise NoKeyError(code, msg)
+                case 2:
+                    raise IncorrectKeyError(code, msg)
+                case 3:
+                    raise WrongTypeError(code, msg)
+                case 4:
+                    raise WrongFieldsError(code, msg)
+                case 5:
+                    raise TooManyRequestsError(code, msg)
+                case 6:
+                    raise IncorrectIDError(code, msg)
+                case 7:
+                    raise IncorredIDEntityRelationError(code, msg)
+                case 8:
+                    raise IPBlockError(code, msg)
+                case 9:
+                    raise APIDisabledError(code, msg)
+                case 10:
+                    raise KeyOwnerInFederalJailError(code, msg)
+                case 11:
+                    raise KeyChangeError(code, msg)
+                case 12:
+                    raise KeyReadError(code, msg)
+                case 13:
+                    raise KeyDisabledDueToInactivityError(code, msg)
+                case 14:
+                    raise DailyLimitReachedError(code, msg)
+                case 15:
+                    raise TemporaryError(code, msg)
+                case 16:
+                    raise AccessLevelError(code, msg)
+
         return response.json()

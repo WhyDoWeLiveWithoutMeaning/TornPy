@@ -2,6 +2,23 @@ from enum import Enum
 from typing import List, Optional
 from pydantic import BaseModel
 
+# Important ENUMS
+
+class Crimes(int, Enum):
+    SEARCHFORCASH = 1
+    BOOTLEGGING = 2
+    GRAFFITI = 3
+    SHOPLIFTING = 4
+    PICKPOCKETING = 5
+    CARDSKIMMING = 6
+    BURGLARY = 7
+    HUSTLING = 8
+    DISPOSAL = 9
+    CRACKING = 10
+    FORGERY = 11
+    SCAMMING = 12
+    ARSON = 13
+
 ## Enums
 class RaceClassEnum(str, Enum):
     A = "A"
@@ -67,8 +84,28 @@ class FactionAttackResult(str, Enum):
     BOUNTY = "Bounty"
     INTERRUPTED = "Interrupted"
 
-## Models
+class RPSEnum(str, Enum):
+    ROCK = "rock"
+    PAPER = "paper"
+    SCISSORS = "scissors"
 
+class UserCrimeUniquesRewardAmmoEnum(str, Enum):
+    STANDARD = "standard"
+    SPECIAL = "special"
+
+## Sub Models
+
+class FactionOngoingChain(BaseModel):
+    id: int
+    current: int
+    max: int
+    timeout: int
+    modifier: float
+    cooldown: int
+    start: int
+    end: int
+
+## Models
 class BasicTornModel(BaseModel):
     id: int
     name: str
