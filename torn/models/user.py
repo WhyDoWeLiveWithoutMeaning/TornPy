@@ -3,6 +3,9 @@ from typing import List, Optional, Union, Annotated, Literal
 from .common import (
     BasicTornModel,
     BasicUser,
+    ItemRarity,
+    TornItemBaseStats,
+    ItemMarketListingItemBonus,
     TornItemAmmoTypeEnum,
     UserStatusStateEnum,
     UserPlaneImageTypeEnum,
@@ -12,7 +15,10 @@ from .common import (
     FactionAttackResult,
     FactionOngoingChain,
     RPSEnum,
-    UserCrimeUniquesRewardAmmoEnum
+    UserCrimeUniquesRewardAmmoEnum,
+    RaceClassEnum,
+    TornItemTypeEnum,
+    TornItemWeaponTypeEnum
 )
 
 # Sub Sub Sub Models
@@ -203,7 +209,7 @@ class UserCrimeDetailsGraffiti(BaseModel):
     cost_to_city: int
 
 class UserCrimeDetailsShoplifting(BaseModel):
-    average_notoriety: int
+    average_notoriety: float
 
 class UserCrimeDetailsCardSkimming(BaseModel):
     card_details: UserCrimeDetailsCardSkimmingCardDetails
@@ -244,6 +250,13 @@ class UserCrimeAttempts(BaseModel):
 class UserCrimeUniques(BaseModel):
     id: int
     rewards: UserCrimeUniquesReward
+
+class UserCurrentEducation(BaseModel):
+    id: int
+    until: int
+
+class TornItemEquipmentStats(TornItemBaseStats):
+    quality: float
 
 # Sub Models
 
@@ -333,6 +346,47 @@ class UserCrime(BaseModel):
         UserCrimeDetailsScamming
     ]] = None
 
+class UserEducation(BaseModel):
+    complete: List[int]
+    current: Optional[UserCurrentEducation] = None
+
+class UserRaceCarDetails(BaseModel):
+    car_item_id: int
+    car_item_name: str
+    top_speed: int
+    acceleration: int
+    braking: int
+    dirt: int
+    handling: int
+    safety: int
+    tarmac: int
+    car_class: RaceClassEnum = Field(alias="class")
+    id: int
+    name: Optional[str] = None
+    worth: int
+    points_spent: int
+    races_entered: int
+    races_won: int
+    is_removed: bool
+    parts: List[int]
+
+class UserEquipment(BaseModel):
+    uid: int
+    stats: Optional[TornItemEquipmentStats] = None # Fucked Cause API says this is GONNA BE THERE
+    bonuses: List[ItemMarketListingItemBonus]
+    rarity: Optional[ItemRarity] = None
+    id: int
+    name: str
+    type: TornItemTypeEnum
+    sub_type: Optional[TornItemWeaponTypeEnum] = None
+    slot: int
+
+class UserClothing(BaseModel):
+    id: int
+    name: str
+    uid: int
+    type: TornItemTypeEnum
+
 # Models
 
 class UserBasicResponse(BaseModel):
@@ -378,3 +432,13 @@ class UserCooldownsResponse(BaseModel):
 
 class UserCrimesResponse(BaseModel):
     crimes: UserCrime
+
+class UserEducationResponse(BaseModel):
+    education: UserEducation
+
+class UserEnlistedCarsResponse(BaseModel):
+    enlistedcars: List[UserRaceCarDetails]
+
+class UserEquipmentResponse(BaseModel):
+    equipment: List[UserEquipment]
+    clothing: List[UserClothing]

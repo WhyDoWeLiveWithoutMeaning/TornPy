@@ -13,7 +13,10 @@ from ..models import (
     UserCompetitionResponse,
     UserCooldownsResponse,
     UserCrimesResponse,
-    UserDiscordResponse
+    UserDiscordResponse,
+    UserEducationResponse,
+    UserEnlistedCarsResponse,
+    UserEquipmentResponse
 )
 
 class UserResource(BaseResource):
@@ -282,3 +285,56 @@ class UserResource(BaseResource):
 
         return UserDiscordResponse(**data)
 
+    def get_education(self: "SyncTorn", **kwargs) -> UserCooldownsResponse:
+        """
+        Get your education information.
+
+        **Access Level:** Minimal Access
+
+        :param kwargs: Optional API parameters:
+            * **bypass_cache** (bool): If True, adds a timestamp to force fresh data.
+            * **comment** (str): A custom string to show in your API logs.
+            * **key** (str): API key. It's not required to use this parameter when passing the API key via the Authorization header.
+        """
+        url = self._build_url("user", "education")
+        params = self._prepare_params(**kwargs)
+        response = self._request(url, params=params)
+        data = self._handle_response(response)
+        
+        return UserEducationResponse(**data)
+
+    def get_enlisted_cars(self: "SyncTorn", **kwargs) -> UserCooldownsResponse:
+        """
+        Get your enlisted cars.
+
+        **Access Level:** Minimal Access
+
+        :param kwargs: Optional API parameters:
+            * **bypass_cache** (bool): If True, adds a timestamp to force fresh data.
+            * **comment** (str): A custom string to show in your API logs.
+            * **key** (str): API key. It's not required to use this parameter when passing the API key via the Authorization header.
+        """
+        url = self._build_url("user", "enlistedcars")
+        params = self._prepare_params(**kwargs)
+        response = self._request(url, params=params)
+        data = self._handle_response(response)
+        
+        return UserEnlistedCarsResponse(**data)
+
+    def get_equipment(self: "SyncTorn", **kwargs) -> UserCooldownsResponse:
+        """
+        Get your equipment & clothing.
+
+        **Access Level:** Minimal Access
+
+        :param kwargs: Optional API parameters:
+            * **bypass_cache** (bool): If True, adds a timestamp to force fresh data.
+            * **comment** (str): A custom string to show in your API logs.
+            * **key** (str): API key. It's not required to use this parameter when passing the API key via the Authorization header.
+        """
+        url = self._build_url("user", "equipment")
+        params = self._prepare_params(**kwargs)
+        response = self._request(url, params=params)
+        data = self._handle_response(response)
+        
+        return UserEquipmentResponse(**data)
