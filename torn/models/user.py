@@ -1,5 +1,5 @@
-from pydantic import BaseModel, Field
-from typing import List, Optional, Union, Annotated, Literal
+from pydantic import BaseModel, Field, RootModel
+from typing import List, Optional, Union, Annotated, Literal, Dict, Any, TypeAlias
 from .common import *
 from .enums import *
 
@@ -16,6 +16,34 @@ class UserCrimeUniquesRewardMoney(BaseModel):
 class UserCrimeUniquesRewardAmmo(BaseModel):
     amount: int
     type: UserCrimeUniquesRewardAmmoEnum
+
+class UserMissionGiverContractsRewards(BaseModel):
+    money: int
+    credits: int
+
+class MissionRewardDetailsAmmo(BasicTornModel):
+    type: TornItemAmmoTypeEnum
+
+class MissionRewardDetailsItem(BasicTornModel):
+    type: TornItemTypeEnum
+    sub_type: Optional[TornItemWeaponTypeEnum] = None
+
+class PersonalStatsAttackingFactionTerritory(BaseModel):
+    wall_joins: int
+    wall_clears: int
+    wall_time: int
+
+class PersonalStatsTradingItemsBought(BaseModel):
+    market: int
+    shops: int
+
+class PersonalStatsTradingItemsAuctions(BaseModel):
+    won: int
+    sold: int
+
+class PersonalStatsOtherActivityStreak(BaseModel):
+    current: int
+    best: int
 
 # SubSub models
 
@@ -175,6 +203,195 @@ class ForumPollVote(BaseModel):
     answer: str
     votes: int
 
+class UserMissionGiverContracts(BaseModel):
+    title: str
+    difficulty: MissionDifficultyEnum
+    status: MissionStatusEnum
+    created_at: int
+    started_at: Optional[int] = None
+    expires_at: Optional[int] = None
+    completed_at: Optional[int] = None
+    rewards: Optional[UserMissionGiverContractsRewards] = None
+
+class PersonalStatsCrimesV2Offenses(BaseModel):
+    vandalism: int
+    fraud: int
+    theft: int
+    counterfeiting: int
+    illicit_services: int
+    cybercrime: int
+    extortion: int
+    illegal_production: int
+    organized_crimes: int
+    total: int
+
+class PersonalStatsCrimesV2Skills(BaseModel):
+    search_for_cash: int
+    bootlegging: int
+    graffiti: int
+    shoplifting: int
+    pickpocketing: int
+    card_skimming: int
+    burglary: int
+    hustling: int
+    disposal: int
+    cracking: int
+    forgery: int
+    scamming: int
+    arson: int
+
+class PersonalStatsAttackingAttacks(BaseModel):
+    won: int
+    lost: int
+    stalemate: int
+    assist: int
+    stealth: int
+
+class PersonalStatsAttackingDefends(BaseModel):
+    won: int
+    lost: int
+    stalemate: int
+    total: int
+
+class PersonalStatsAttackingEscapes(BaseModel):
+    player: int
+    foes: int
+
+class PersonalStatsAttackingKillstreak(BaseModel):
+    best: int
+    current: int
+
+class PersonalStatsAttackingHits(BaseModel):
+    success: int
+    miss: int
+    critical: int
+    one_hit_kills: int
+
+class PersonalStatsAttackingDamage(BaseModel):
+    total: int
+    best: int
+
+class PersonalStatsAttackingNetworth(BaseModel):
+    money_mugged: int
+    largest_mug: int
+    items_looted: int
+
+class PersonalStatsAttackingAmmunition(BaseModel):
+    total: int
+    special: int
+    hollow_point: int
+    tracer: int
+    piercing: int
+    incendiary: int
+
+class PersonalStatsAttackingFaction(BaseModel):
+    respect: int
+    retaliations: int
+    ranked_war_hits: int
+    raid_hits: int
+    territory: PersonalStatsAttackingFactionTerritory
+
+class PersonalStatsJobsStats(BaseModel):
+    manual: int
+    intelligence: int
+    endurance: int
+    total: int
+
+class PersonalStatsTradingItems(BaseModel):
+    bought: PersonalStatsTradingItemsBought
+    auctions: PersonalStatsTradingItemsAuctions
+    sent: int
+
+class PersonalStatsTradingPoints(BaseModel):
+    bought: int
+    sold: int
+
+class PersonalStatsTradingBazaar(BaseModel):
+    customers: int
+    sales: int
+    profit: int
+
+class PersonalStatsTradingItemMarket(BaseModel):
+    customers: int
+    sales: int
+    revenue: int
+    fees: int
+
+class PersonalStatsJailBusts(BaseModel):
+    success: int
+    fails: int
+
+class PersonalStatsJailBails(BaseModel):
+    amount: int
+    fees: int
+
+class PersonalStatsHospitalReviving(BaseModel):
+    skill: int
+    revives: int
+    revives_received: int
+
+class PersonalStatsCommunicationMailsSent(BaseModel):
+    total: int
+    friends: int
+    faction: int
+    colleagues: int
+    spouse: int
+
+class PersonalStatsBountiesGeneric(BaseModel):
+    amount: int
+    value: int
+
+class PersonalStatsInvestmentsBank(BaseModel):
+    total: int
+    profit: int
+    current: int
+    time_remaining: int
+
+class PersonalStatsInvestmentsStocks(BaseModel):
+    profits: int
+    losses: int
+    fees: int
+    net_profits: int
+    payouts: int
+
+class PersonalStatsItemsFound(BaseModel):
+    city: int
+    dump: int
+    easter_eggs: int
+
+class PersonalStatsItemsUsed(BaseModel):
+    books: int
+    boosters: int
+    consumables: int
+    candy: int
+    alcohol: int
+    energy_drinks: int
+    stat_enhancers: int
+    easter_eggs: int
+
+class PersonalStatsTravelHunting(BaseModel): skill: int
+
+class PersonalStatsDrugsRehabilitation(BaseModel):
+    amount: int
+    fees: int
+
+class PersonalStatsMissionsContracts(BaseModel):
+    total: int
+    duke: int
+
+class PersonalStatsRacingRaces(BaseModel):
+    entered: int
+    won: int
+
+class PersonalStatsOtherActivity(BaseModel):
+    time: int
+    streak: PersonalStatsOtherActivityStreak
+
+class PersonalStatsOtherRefills(BaseModel):
+    energy: int
+    nerve: int
+    token: int
+
 # Mid Sub Models
 
 class UserBattleStatDetail(BaseModel):
@@ -257,6 +474,224 @@ class ForumPoll(BaseModel):
     question: str
     answers_count: int
     answers: List[ForumPollVote]
+
+class HofValue(BaseModel):
+    value: int
+    rank: int
+
+class HofValueFloat(BaseModel):
+    value: float
+    rank: int
+
+class HofValueString(BaseModel):
+    value: str
+    rank: Optional[int] = None
+
+class UserJobPoints(BaseModel):
+    army: int
+    casino: int
+    education: int
+    grocer: int
+    law: int
+    medical: int
+
+class UserCompanyPoints(BaseModel):
+    company: BasicTornModel
+    points: int
+
+class UserLastAction(BaseModel):
+    status: UserLastActionStatusEnum
+    timestamp: int
+    relative: str
+
+class UserStatus(BaseModel):
+    description: str
+    details: Optional[str] = None
+    state: Union[UserStatusStateEnum, str]
+    color: str
+    until: Optional[int] = None
+    plane_image_type: Optional[UserPlaneImageTypeEnum] = None
+
+class UserLogDetails(BaseModel):
+    id: int
+    title: str
+    category: str
+
+class UserMeritUpgrade(BaseModel):
+    id: int
+    level: int
+
+class UserMissionGiver(BaseModel):
+    id: int
+    name: str
+    contracts: List[UserMissionGiverContracts]
+
+class UserMissionReward(BaseModel):
+    type: MissionRewardUpgrade
+    details: Union[MissionRewardDetailsItem, MissionRewardDetailsAmmo, BasicTornModel]
+    amount: int
+    cost: int
+    expires_at: int
+
+class UserMoneyCityBank(BaseModel):
+    amount: int
+    profit: int
+    duration: int
+    interest_rate: float
+    until: int
+    invested_at: int
+
+class UserMoneyFactionBank(BaseModel):
+    money: int
+    points: int
+
+class PersonalStatsCrimesV1(BaseModel):
+    total: int
+    sell_illgal_goods: int
+    theft: int
+    auto_theft: int
+    drug_deals: int
+    computer: int
+    fraud: int
+    murder: int
+    other: int
+    organized_crimes: int
+    version: str
+
+class PersonalStatsCrimesV2(BaseModel):
+    offenses: PersonalStatsCrimesV2Offenses
+    skills: PersonalStatsCrimesV2Skills
+    version: str
+
+class PersonalStatsAttacking(BaseModel):
+    attacks: PersonalStatsAttackingAttacks
+    defends: PersonalStatsAttackingDefends
+    elo: int
+    unarmored_wins: int
+    highest_level_beaten: int
+    escapes: PersonalStatsAttackingEscapes
+    killstreak: PersonalStatsAttackingKillstreak
+    hits: PersonalStatsAttackingHits
+    damage: PersonalStatsAttackingDamage
+    networth: PersonalStatsAttackingNetworth
+    faction: PersonalStatsAttackingFaction
+
+class PersonalStatsBattleStats(BaseModel):
+    strength: int
+    defense: int
+    speed: int
+    dexterity: int
+    total: int
+
+class PersonalStatsJobs(BaseModel):
+    job_points_used: int
+    trains_received: int
+    stats: Optional[PersonalStatsJobsStats] = None
+
+class PersonalStatsTrading(BaseModel):
+    items: PersonalStatsTradingItems
+    trades: int
+    points: PersonalStatsTradingPoints
+    bazaar: PersonalStatsTradingBazaar
+    item_market: PersonalStatsTradingItemMarket
+
+class PersonalStatsJail(BaseModel):
+    times_jailed: int
+    busts: PersonalStatsJailBusts
+    bails: PersonalStatsJailBails
+
+class PersonalStatsHospital(BaseModel):
+    times_hospitalized: int
+    medical_items_used: int
+    blood_withdrawn: int
+    reviving: PersonalStatsHospitalReviving
+
+class PersonalStatsFinishingHits(BaseModel):
+    heavy_artillery: int
+    machine_guns: int
+    rifles: int
+    sub_machine_guns: int
+    shotguns: int
+    pistols: int
+    temporary: int
+    piercing: int
+    slashing: int
+    clubbing: int
+    mechanical: int
+    hand_to_hand: int
+
+class PersonalStatsCommunication(BaseModel):
+    mails_sent: PersonalStatsCommunicationMailsSent
+    classified_ads: int
+    personals: int
+
+class PersonalStatsBounties(BaseModel):
+    placed: PersonalStatsBountiesGeneric
+    collected: PersonalStatsBountiesGeneric
+    received: PersonalStatsBountiesGeneric
+
+class PersonalStatsInvestments(BaseModel):
+    bank: PersonalStatsInvestmentsBank
+    stocks: PersonalStatsInvestmentsStocks
+
+class PersonalStatsItems(BaseModel):
+    found: PersonalStatsItemsFound
+    trashed: int
+    used: PersonalStatsItemsUsed
+    viruses_coded: int
+
+class PersonalStatsTravel(BaseModel):
+    total: int
+    time_spent: int
+    hunting: PersonalStatsTravelHunting
+    attacks_won: int
+    defends_lost: int
+    argentina: int
+    canada: int
+    cayman_islands: int
+    china: int
+    hawaii: int
+    japan: int
+    mexico: int
+    united_arab_emirates: int
+    united_kingdom: int
+    south_africa: int
+    switzerland: int
+
+class PersonalStatsDrugs(BaseModel):
+    cannabis: int
+    ecstasy: int
+    ketamine: int
+    lsd: int
+    opium: int
+    pcp: int
+    shrooms: int
+    speed: int
+    vicodin: int
+    xanax: int
+    total: int
+    overdoses: int
+    rehabilitations: PersonalStatsDrugsRehabilitation
+
+class PersonalStatsMissions(BaseModel):
+    missions: int
+    contracts: PersonalStatsMissionsContracts
+    credits: int 
+
+class PersonalStatsRacing(BaseModel):
+    skill: int
+    points: int
+    races: PersonalStatsRacingRaces
+
+class PersonalStatsNetworth(BaseModel): total: int
+
+class PersonalStatsOther(BaseModel):
+    activity: PersonalStatsOtherActivity
+    awards: int
+    merits_bought: int
+    refills: PersonalStatsOtherRefills
+    donator_days: int
+    ranked_war_wins: int
 
 # Sub Models
 
@@ -453,34 +888,154 @@ class ForumThreadExtended(ForumThreadBase):
     content_raw: str
     poll: Optional[ForumPoll] = None
 
+class UserHofStats(BaseModel):
+    attacks: HofValue
+    busts: HofValue
+    defends: HofValue
+    networth: HofValue
+    offences: HofValue
+    revives: HofValue
+    level: HofValue
+    rank: HofValue
+    awards: HofValue
+    racing_skill: HofValueFloat
+    racing_points: HofValue
+    racing_wins: HofValue
+    travel_time: HofValue
+    working_stats: HofValue
+    battle_stats: Optional[HofValue] = None
+
+class UserHonor(BaseModel):
+    id: int
+    timestamp: int
+
+class UserIconPublic(BaseModel):
+    id: int
+    title: str
+    description: str
+
+class UserIconPrivate(UserIconPublic):
+    until: Optional[int] = None
+
+class UserJobPointsWrap(BaseModel):
+    jobs: UserJobPoints
+    companies: List[UserCompanyPoints]
+
+class UserJobRanks(BaseModel):
+    army: JobPositionArmyEnum
+    grocer: JobPositionGrocerEnum
+    casino: JobPositionCasinoEnum
+    medical: JobPositionMedicalEnum
+    law: JobPositionLawEnum
+    education: JobPositionEducationEnum
+
+class UserList(BaseModel):
+    id: int
+    name: str
+    level: int
+    faction_id: Optional[int] = None
+    last_action: UserLastAction
+    status: UserStatus
+
+class UserLog(BaseModel):
+    id: str
+    timestamp: int
+    details: UserLogDetails
+    data: Dict[str, Any]
+    params: Dict[str, Any]
+
+class UserMedal(BaseModel):
+    id: int
+    timestamp: int
+
+class UserMerits(BaseModel):
+    upgrades: List[UserMeritUpgrade]
+    available: int
+    used: int
+    medals: int
+    honors: int
+
+class UserMessage(BaseModel):
+    id: int
+    sender: BasicUser
+    timestamp: int
+    topic: str
+    type: UserMessageTypeEnum
+    seen: bool
+    read: bool
+
+class UserMissions(BaseModel):
+    credits: int
+    givers: List[UserMissionGiver]
+    rewards: List[UserMissionReward]
+
+class UserMoney(BaseModel):
+    points: int
+    wallet: int
+    company: int
+    vault: int
+    cayman_bank: int
+    city_bank: Optional[UserMoneyCityBank] = None
+    faction: Optional[UserMoneyFactionBank] = None
+    daily_networth: int
+
+class UserNotifications(BaseModel):
+    messages: int
+    events: int
+    awards: int
+    competition: int
+
+class UserOrganizedCrimeError(BaseModel):
+    code: Literal[27]
+    error: str
+
+class UserOranizedCrime(BaseModel):
+    id: int
+    previous_crime_id: int
+
+class PersonalStatsCrimes(BaseModel):
+    crimes: Union[
+        PersonalStatsCrimesV1,
+        PersonalStatsCrimesV2
+    ]
+
+class PersonalStatsBasic(BaseModel):
+    name: str
+    value: int
+    timestamp: int
+
+class PersonalStats(BaseModel):
+    attacking: Optional[PersonalStatsAttacking] = None
+    battle_stats: Optional[PersonalStatsBattleStats] = None
+    jobs: Optional[PersonalStatsJobs] = None
+    trading: Optional[PersonalStatsTrading] = None
+    jail: Optional[PersonalStatsJail] = None
+    hospital: Optional[PersonalStatsHospital] = None
+    finishing_hits: Optional[PersonalStatsFinishingHits] = None
+    communication: Optional[PersonalStatsCommunication] = None
+    crimes: Optional[Union[PersonalStatsCrimesV1, PersonalStatsCrimesV2]] = None
+    bounties: Optional[PersonalStatsBounties] = None
+    investments: Optional[PersonalStatsInvestments] = None
+    items: Optional[PersonalStatsItems] = None
+    travel: Optional[PersonalStatsTravel] = None
+    drugs: Optional[PersonalStatsDrugs] = None
+    missions: Optional[PersonalStatsMissions] = None
+    racing: Optional[PersonalStatsRacing] = None
+    networth: Optional[PersonalStatsNetworth] = None
+    other: Optional[PersonalStatsOther] = None
+
+
 # Models
 
-class UserBasicResponse(BaseModel):
-    profile: UserBasic
-
-class UserAmmoResponse(BaseModel):
-    ammo: List[UserAmmo]
-
-class UserDiscordResponse(BaseModel):
-    discord: UserDiscord
-
-class UserBarsResponse(BaseModel):
-    bars: UserBars
-
-class AttacksResponse(BaseModel):
-    attacks: List[Attack]
-
-class AttacksFullResponse(BaseModel):
-    attacks: List[AttackSimplified]
-
-class UserBattleStatsResponse(BaseModel):
-    battlestats: UserBattleStats
-
-class UserBountiesResponse(BaseModel):
-    bounties: List[Bounty]
-
-class UserCalendarResponse(BaseModel):
-    calendar: UserCalendar
+class UserBasicResponse(BaseModel): profile: UserBasic
+class UserAmmoResponse(BaseModel): ammo: List[UserAmmo]
+class UserDiscordResponse(BaseModel): discord: UserDiscord
+class UserBarsResponse(BaseModel): bars: UserBars
+class AttacksResponse(BaseModel): attacks: List[Attack]
+class AttacksFullResponse(BaseModel): attacks: List[AttackSimplified]
+class UserBattleStatsResponse(BaseModel): battlestats: UserBattleStats
+class UserBountiesResponse(BaseModel): bounties: List[Bounty]
+class UserCalendarResponse(BaseModel): calendar: UserCalendar
 
 class UserCompetitionResponse(BaseModel):
     competition: Annotated[
@@ -493,37 +1048,41 @@ class UserCompetitionResponse(BaseModel):
         Field(discriminator="name")
     ]
 
-class UserCooldownsResponse(BaseModel):
-    cooldowns: UserCooldowns
-
-class UserCrimesResponse(BaseModel):
-    crimes: UserCrime
-
-class UserEducationResponse(BaseModel):
-    education: UserEducation
-
-class UserEnlistedCarsResponse(BaseModel):
-    enlistedcars: List[UserRaceCarDetails]
+class UserCooldownsResponse(BaseModel): cooldowns: UserCooldowns
+class UserCrimesResponse(BaseModel): crimes: UserCrime
+class UserEducationResponse(BaseModel): education: UserEducation
+class UserEnlistedCarsResponse(BaseModel): enlistedcars: List[UserRaceCarDetails]
 
 class UserEquipmentResponse(BaseModel):
     equipment: List[UserEquipment]
     clothing: List[UserClothing]
 
-class UserEventsResponse(BaseModel):
-    events: List[UserEvent]
+class UserEventsResponse(BaseModel): events: List[UserEvent]
+class UserFactionResponse(BaseModel): faction: Optional[UserFaction]
+class UserForumFeedResponse(BaseModel): forumFeed: List[ForumFeed]
+class UserForumFriendsResponse(BaseModel): forumFriends: List[ForumFeed]
+class UserForumPostsResponse(BaseModel): forumPosts: List[ForumPost]
+class UserForumSubscribedThreadsResponse(BaseModel): forumSubscribedThreads: List[ForumSubscribedThread]
+class UserHofResponse(BaseModel): hof: UserHofStats
+class UserHonorsResponse(BaseModel): honors: List[UserHonor]
+class UserIconsResponse(BaseModel): icons: List[Union[UserIconPrivate, UserIconPublic]]
+class UserJobPointsResponse(BaseModel): jobpoints: UserJobPointsWrap
+class UserJobRanksResponse(BaseModel): jobranks: UserJobRanks
+class UserListResponse(BaseModel): list: List[UserList]
+class UserLogsResponse(BaseModel): log: List[UserLog]
+class UserMedalsResponse(BaseModel): medals: List[UserMedal]
+class UserMeritsResponse(BaseModel): merits: UserMerits
+class UserMessagesResponse(BaseModel): messages: List[UserMessage]
+class UserMissionsResponse(BaseModel): missions: UserMissions
+class UserMoneyResponse(BaseModel): money: UserMoney
+class UserNewEventsResponse(BaseModel): events: List[UserEvent]
+class UserNewMessagesResponse(BaseModel): messages: List[UserMessage]
+class UserNotificationsResponse(BaseModel): notifications: UserNotifications
+class UserOrganizedCrimeResponse(BaseModel): organizedCrime: Optional[Union[FactionCrime, UserOrganizedCrimeError]] = None
 
-class UserFactionResponse(BaseModel):
-    faction: Optional[UserFaction]
-
-class UserForumFeedResponse(BaseModel):
-    forumFeed: List[ForumFeed]
-
-class UserForumFriendsResponse(BaseModel):
-    forumFriends: List[ForumFeed]
-
-class UserForumPostsResponse(BaseModel):
-    forumPosts: List[ForumPost]
-
-class UserForumSubscribedThreadsResponse(BaseModel):
-    forumSubscribedThreads: List[ForumSubscribedThread]
+class UserPersonalStatsResponse(BaseModel):
+    personalstats: Union[
+        PersonalStats,
+        List[PersonalStatsBasic]
+    ]
 

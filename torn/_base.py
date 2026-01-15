@@ -5,6 +5,7 @@ from enum import Enum
 from typing import Any, Dict
 
 from .exceptions import *
+from .resources.help import HelperResource
 
 class BaseClient:
     def __init__(
@@ -20,6 +21,7 @@ class BaseClient:
             "User-Agent": "TornPy/0.1.0"
         }
         self._timeout = timeout
+        self.help = HelperResource(self)        
 
     def _build_url(self, *args: Any) -> str:
         path = "/".join(str(arg).strip("/") for arg in args)
@@ -49,12 +51,15 @@ class BaseClient:
         for k, v in extra_params.items():
             if v is None:
                 continue
-                
+         
             # Handle lists like filters=["incoming", ApiFiltersAttacksRevivesEnum.OUTGOING]
             if isinstance(v, list):
                 # map(str, v) turns the Enum member into its value ("incoming")
                 # and leaves normal strings exactly as they are.
-                extra_params[k] = ",".join(map(str, v))
+                extra_params[k] = ",".join(
+                    map(lambda x: x.value if hasattr(x, "value") else str(x), v)
+                )
+
                 
             # Handle single values (like sort="DESC" or an Enum member)
             elif isinstance(v, Enum):

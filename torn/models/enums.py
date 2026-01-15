@@ -17,6 +17,10 @@ class Crimes(int, Enum):
     SCAMMING = 12
     ARSON = 13
 
+class SortOrder(str, Enum):
+    ASC = "ASC"
+    DESC = "DESC"
+
 class RaceClassEnum(str, Enum):
     A = "A"
     B = "B"
@@ -178,6 +182,62 @@ class PersonalStatsCategoryEnum(str, Enum):
     ITEM_MARKET_SALES = "itemmarketsales"
     ITEM_MARKET_REVENUE = "itemmarketrevenue"
     ITEM_MARKET_FEES = "itemmarketfees"
+
+class MissionStatusEnum(str, Enum):
+    ACCEPTED = "Accepted"
+    AVAILABLE = "Available"
+    FAILED = "Failed"
+    COMPLETED = "Completed"
+    READY_FOR_REWARD = "ReadyForReward"
+
+class MissionRewardUpgrade(str, Enum):
+    ITEM = "Item"
+    AMMO = "Ammo"
+    UPGRADE = "Upgrade"
+
+class FactionCrimeStatusEnum(str, Enum):
+    RECRUITING = "Recruiting"
+    PLANNING = "Planning"
+    SUCCESSFUL = "Successful"
+    FAILURE = "Failure"
+    EXPIRED = "Expired"
+
+class PersonalStatsCategoryEnum(str, Enum):
+    ALL = "all"
+    POPULAR = "popular"
+    ATTACKING = "attacking"
+    BATTLE_STATS = "battle_stats"
+    JOBS = "jobs"
+    TRADING = "trading"
+    JAIL = "jail"
+    HOSPITAL = "hospital"
+    FINISHING_HITS = "finishing_hits"
+    COMMUNICATION = "communication"
+    CRIMES = "crimes"
+    BOUNTIES = "bounties"
+    INVESTMENTS = "investments"
+    ITEMS = "items"
+    TRAVEL = "travel"
+    DRUGS = "drugs"
+    MISSIONS = "missions"
+    RACING = "racing"
+    NETWORTH = "networth"
+    OTHER = "other"
+    ITEM_MARKET_CUSTOMERS = "itemmarketcustomers"
+    ITEM_MARKET_SALES = "itemmarketsales"
+    ITEM_MARKET_REVENUE = "itemmarketrevenue"
+    ITEM_MARKET_FEES = "itemmarketfees"
+
+class FactionCrimeUserItemOutcomeEnum(str, Enum):
+    USER = "user"
+    FACTION = "faction"
+
+class FactionCrimeUserOutcome(str, Enum):
+    SUCCESSFUL = "Successful"
+    FAILED = "Failed"
+    JAILED = "Jailed"
+    INJURED = "Injured"
+    HOSPITALIZED = "Hospitalized"
 
 class PersonalStatsStatName(str, Enum):
     # --- Combat & Attacks ---
@@ -439,3 +499,79 @@ class FactionApplicationStatusEnum(str, Enum):
     DECLINED = "declined"
     WITHDRAWN = "withdrawn"
     ACTIVE = "active"
+
+class UserListEnum(str, Enum):
+    FRIENDS = "Friends"
+    ENEMIES = "Enemies"
+    TARGETS = "Targets"
+
+class JobPositionArmyEnum(str, Enum):
+    PRIVATE = "Private"
+    CORPORAL = "Corporal"
+    SERGEANT = "Sergeant"
+    MASTER_SERGEANT = "Master Sergeant"
+    WARRANT_OFFICER = "Warrant Officer"
+    LIEUTENANT = "Lieutenant"
+    MAJOR = "Major"
+    COLONEL = "Colonel"
+    BRIGADIER = "Brigadier"
+    GENERAL = "General"
+
+class JobPositionGrocerEnum(str, Enum):
+    BAGBOY = "Bagboy"
+    PRICE_LABELER = "Price Labeler"
+    CASHIER = "Cashier"
+    FOOD_DELIVERY = "Food Delivery"
+    MANAGER = "Manager"
+
+class JobPositionCasinoEnum(str, Enum):
+    GAMING_CONSULTANT = "Gaming Consultant"
+    MARKETING_MANAGER = "Marketing Manager"
+    REVENUE_MANAGER = "Revenue Manager"
+    CASINO_MANAGER = "Casino Manager"
+    CASINO_PRESIDENT = "Casino President"
+
+class JobPositionEducationEnum(str, Enum):
+    RECESS_SUPERVISOR = "Recess Supervisor"
+    SUBSTITUTE_TEACHER = "Substitute Teacher"
+    ELEMENTARY_TEACHER = "Elementary Teacher"
+    SECONDARY_TEACHER = "Secondary Teacher"
+    PROFESSOR = "Professor"
+    VICE_PRINCIPAL = "Vice-Principal"
+    PRINCIPAL = "Principal"
+
+class JobPositionLawEnum(str, Enum):
+    LAW_STUDENT = "Law Student"
+    PARALEGAL = "Paralegal"
+    PROBATE_LAWYER = "Probate Lawyer"
+    TRIAL_LAWYER = "Trial Lawyer"
+    CIRCUIT_COURT_JUDGE = "Circuit Court Judge"
+    FEDERAL_JUDGE = "Federal Judge"
+
+class JobPositionMedicalEnum(str, Enum):
+    MEDICAL_STUDENT = "Medical Student"
+    HOUSEMAN = "Houseman"
+    SENIOR_HOUSEMAN = "Senior Houseman"
+    GP = "GP"
+    CONSULTANT = "Consultant"
+    SURGEON = "Surgeon"
+    BRAIN_SURGEON = "Brain Surgeon"
+
+class UserLastActionStatusEnum(str, Enum):
+    ONLINE = "Online"
+    IDLE = "Idle"
+    OFFLINE = "Offline"
+
+class UserMessageTypeEnum(str, Enum):
+    COMPANY_NEWSLETTER = "Company newsletter"
+    FACTION_NEWSLETTER = "Faction newsletter"
+    WARNING = "Warning"
+    USER_MESSAGE = "User message"
+
+class UserDonatorStatusEnum(str, Enum):
+    DONATOR = "Donator"
+    SUBSCRIBER = "Subscriber"
+
+
+
+
